@@ -1,0 +1,35 @@
+Run: stage2_mse
+Configuration: {'normalize': True, 'output_activation': None, 'loss_name': 'mse'}
+
+Training per epoch
+Epoch 0    Accuracy 0.9457  Loss 0.0088
+Epoch 1    Accuracy 0.9631  Loss 0.0060
+Epoch 2    Accuracy 0.9738  Loss 0.0044
+Epoch 3    Accuracy 0.9814  Loss 0.0033
+Epoch 4    Accuracy 0.9833  Loss 0.0029
+Epoch 5    Accuracy 0.9865  Loss 0.0023
+Epoch 6    Accuracy 0.9883  Loss 0.0021
+Epoch 7    Accuracy 0.9903  Loss 0.0017
+Epoch 8    Accuracy 0.9926  Loss 0.0014
+Epoch 9    Accuracy 0.9917  Loss 0.0016
+Epoch 10   Accuracy 0.9951  Loss 0.0010
+Epoch 11   Accuracy 0.9930  Loss 0.0013
+Epoch 12   Accuracy 0.9959  Loss 0.0008
+Epoch 13   Accuracy 0.9967  Loss 0.0007
+Epoch 14   Accuracy 0.9968  Loss 0.0006
+Epoch 15   Accuracy 0.9964  Loss 0.0007
+Epoch 16   Accuracy 0.9973  Loss 0.0005
+Epoch 17   Accuracy 0.9972  Loss 0.0006
+Epoch 18   Accuracy 0.9977  Loss 0.0005
+Epoch 19   Accuracy 0.9977  Loss 0.0004
+Epoch 20   Accuracy 0.9965  Loss 0.0006
+Epoch 21   Accuracy 0.9982  Loss 0.0004
+Epoch 22   Accuracy 0.9977  Loss 0.0004
+Epoch 23   Accuracy 0.9980  Loss 0.0004
+Epoch 24   Accuracy 0.9960  Loss 0.0007
+
+Test results
+Accuracy:           0.9782
+Weighted Precision: 0.9786
+Weighted Recall:    0.9782
+Weighted F1:        0.9783

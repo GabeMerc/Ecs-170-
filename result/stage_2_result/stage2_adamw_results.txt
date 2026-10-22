@@ -1,0 +1,42 @@
+Run: stage2_adamw
+Configuration: {'normalize': True, 'output_activation': None, 'optimizer_name': 'adamw'}
+
+Training per epoch
+Epoch 0    Accuracy 0.9461  Loss 0.1928
+Epoch 1    Accuracy 0.9665  Loss 0.1162
+Epoch 2    Accuracy 0.9758  Loss 0.0860
+Epoch 3    Accuracy 0.9832  Loss 0.0622
+Epoch 4    Accuracy 0.9869  Loss 0.0495
+Epoch 5    Accuracy 0.9889  Loss 0.0416
+Epoch 6    Accuracy 0.9909  Loss 0.0327
+Epoch 7    Accuracy 0.9932  Loss 0.0257
+Epoch 8    Accuracy 0.9960  Loss 0.0188
+Epoch 9    Accuracy 0.9962  Loss 0.0170
+Epoch 10   Accuracy 0.9971  Loss 0.0133
+Epoch 11   Accuracy 0.9963  Loss 0.0155
+Epoch 12   Accuracy 0.9975  Loss 0.0118
+Epoch 13   Accuracy 0.9991  Loss 0.0071
+Epoch 14   Accuracy 0.9995  Loss 0.0053
+Epoch 15   Accuracy 0.9993  Loss 0.0050
+Epoch 16   Accuracy 0.9989  Loss 0.0058
+Epoch 17   Accuracy 0.9992  Loss 0.0049
+Epoch 18   Accuracy 0.9993  Loss 0.0042
+Epoch 19   Accuracy 0.9994  Loss 0.0039
+Epoch 20   Accuracy 0.9989  Loss 0.0049
+Epoch 21   Accuracy 0.9997  Loss 0.0024
+Epoch 22   Accuracy 0.9976  Loss 0.0076
+Epoch 23   Accuracy 0.9991  Loss 0.0039
+Epoch 24   Accuracy 0.9998  Loss 0.0016
+Epoch 25   Accuracy 1.0000  Loss 0.0005
+Epoch 26   Accuracy 1.0000  Loss 0.0004
+Epoch 27   Accuracy 1.0000  Loss 0.0004
+Epoch 28   Accuracy 1.0000  Loss 0.0004
+Epoch 29   Accuracy 0.9926  Loss 0.0220
+Epoch 30   Accuracy 0.9994  Loss 0.0030
+Epoch 31   Accuracy 0.9999  Loss 0.0008
+
+Test results
+Accuracy:           0.9805
+Weighted Precision: 0.9805
+Weighted Recall:    0.9805
+Weighted F1:        0.9805

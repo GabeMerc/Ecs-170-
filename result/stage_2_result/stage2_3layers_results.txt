@@ -1,0 +1,40 @@
+Run: stage2_3layers
+Configuration: {'normalize': True, 'output_activation': None, 'hidden_sizes': (512, 256, 128)}
+
+Training per epoch
+Epoch 0    Accuracy 0.9641  Loss 0.1208
+Epoch 1    Accuracy 0.9798  Loss 0.0679
+Epoch 2    Accuracy 0.9808  Loss 0.0571
+Epoch 3    Accuracy 0.9905  Loss 0.0312
+Epoch 4    Accuracy 0.9900  Loss 0.0305
+Epoch 5    Accuracy 0.9932  Loss 0.0213
+Epoch 6    Accuracy 0.9933  Loss 0.0202
+Epoch 7    Accuracy 0.9956  Loss 0.0142
+Epoch 8    Accuracy 0.9938  Loss 0.0184
+Epoch 9    Accuracy 0.9925  Loss 0.0231
+Epoch 10   Accuracy 0.9969  Loss 0.0096
+Epoch 11   Accuracy 0.9966  Loss 0.0100
+Epoch 12   Accuracy 0.9971  Loss 0.0090
+Epoch 13   Accuracy 0.9950  Loss 0.0163
+Epoch 14   Accuracy 0.9972  Loss 0.0082
+Epoch 15   Accuracy 0.9964  Loss 0.0126
+Epoch 16   Accuracy 0.9963  Loss 0.0113
+Epoch 17   Accuracy 0.9984  Loss 0.0051
+Epoch 18   Accuracy 0.9958  Loss 0.0123
+Epoch 19   Accuracy 0.9970  Loss 0.0094
+Epoch 20   Accuracy 0.9981  Loss 0.0061
+Epoch 21   Accuracy 0.9970  Loss 0.0090
+Epoch 22   Accuracy 0.9988  Loss 0.0042
+Epoch 23   Accuracy 0.9989  Loss 0.0038
+Epoch 24   Accuracy 0.9990  Loss 0.0035
+Epoch 25   Accuracy 0.9965  Loss 0.0133
+Epoch 26   Accuracy 0.9983  Loss 0.0048
+Epoch 27   Accuracy 0.9987  Loss 0.0044
+Epoch 28   Accuracy 0.9988  Loss 0.0038
+Epoch 29   Accuracy 0.9980  Loss 0.0069
+
+Test results
+Accuracy:           0.9808
+Weighted Precision: 0.9810
+Weighted Recall:    0.9808
+Weighted F1:        0.9808
