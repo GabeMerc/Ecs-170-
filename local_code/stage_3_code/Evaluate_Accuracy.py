@@ -17,8 +17,9 @@ class Evaluate_Accuracy(evaluate):
         print('evaluating performance...')
         return accuracy_score(self.data['true_y'], self.data['pred_y'])
 
-    def evaluate_weighted_suite(self, plot_save_path=None):
+    def evaluate_weighted_suite(self, plot_save_path=None, loss_name='cross_entropy'):
         #Print accuracy + weighted precision/recall/F1
+        #loss_name: same names as the methods' loss_name option, used for the loss plot's y-axis label
         true_y = self.data['true_y']
         pred_y = self.data['pred_y']
 
@@ -41,7 +42,8 @@ class Evaluate_Accuracy(evaluate):
             ax_loss.plot(history['epoch'], history['loss'], marker='o', markersize=3)
             ax_loss.set_title('Training Loss Convergence')
             ax_loss.set_xlabel('Epoch')
-            ax_loss.set_ylabel('Cross-Entropy Loss')
+            loss_labels = {'cross_entropy': 'Cross-Entropy Loss', 'nll': 'NLL Loss', 'mse': 'MSE Loss'}
+            ax_loss.set_ylabel(loss_labels.get(loss_name, str(loss_name)))
             ax_loss.grid(True, alpha=0.3)
 
             ax_acc.plot(history['epoch'], history['accuracy'], marker='o', markersize=3)
