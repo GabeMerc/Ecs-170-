@@ -1,0 +1,45 @@
+Run: mnist_leakyrelu
+Loss: cross_entropy, Optimizer: adam
+Conv layers:
+Sequential(
+  (0): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (1): LeakyReLU(negative_slope=0.01)
+  (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (3): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (4): LeakyReLU(negative_slope=0.01)
+  (5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+)
+FC layers:
+Sequential(
+  (0): Linear(in_features=3136, out_features=128, bias=True)
+  (1): LeakyReLU(negative_slope=0.01)
+  (2): Linear(in_features=128, out_features=10, bias=True)
+)
+
+Training per epoch
+Epoch 0    Accuracy 0.9343  Loss 0.2238
+Epoch 1    Accuracy 0.9846  Loss 0.0506
+Epoch 2    Accuracy 0.9895  Loss 0.0338
+Epoch 3    Accuracy 0.9920  Loss 0.0248
+Epoch 4    Accuracy 0.9939  Loss 0.0194
+Epoch 5    Accuracy 0.9956  Loss 0.0142
+Epoch 6    Accuracy 0.9964  Loss 0.0114
+Epoch 7    Accuracy 0.9966  Loss 0.0102
+Epoch 8    Accuracy 0.9976  Loss 0.0076
+Epoch 9    Accuracy 0.9976  Loss 0.0074
+Epoch 10   Accuracy 0.9973  Loss 0.0076
+Epoch 11   Accuracy 0.9986  Loss 0.0040
+Epoch 12   Accuracy 0.9979  Loss 0.0064
+Epoch 13   Accuracy 0.9986  Loss 0.0041
+Epoch 14   Accuracy 0.9989  Loss 0.0038
+Epoch 15   Accuracy 0.9984  Loss 0.0050
+Epoch 16   Accuracy 0.9995  Loss 0.0016
+Epoch 17   Accuracy 0.9990  Loss 0.0031
+Epoch 18   Accuracy 0.9987  Loss 0.0043
+Epoch 19   Accuracy 0.9992  Loss 0.0023
+
+Test results
+Accuracy:           0.9911
+Weighted Precision: 0.9911
+Weighted Recall:    0.9911
+Weighted F1:        0.9911

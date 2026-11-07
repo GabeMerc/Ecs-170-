@@ -17,9 +17,10 @@ class Evaluate_Accuracy(evaluate):
         print('evaluating performance...')
         return accuracy_score(self.data['true_y'], self.data['pred_y'])
 
-    def evaluate_weighted_suite(self, plot_save_path=None, loss_name='cross_entropy'):
+    def evaluate_weighted_suite(self, plot_save_path=None, loss_name='cross_entropy', show_plot=False):
         #Print accuracy + weighted precision/recall/F1
         #loss_name: same names as the methods' loss_name option, used for the loss plot's y-axis label
+        #show_plot: open the plot window (pauses the script until closed), False only saves it so runs can go unattended
         true_y = self.data['true_y']
         pred_y = self.data['pred_y']
 
@@ -58,6 +59,9 @@ class Evaluate_Accuracy(evaluate):
             if plot_save_path is not None:
                 fig.savefig(plot_save_path, dpi=150)
                 print('convergence plot saved to', plot_save_path)
-            plt.show()
+            if show_plot:
+                plt.show()
+            else:
+                plt.close(fig)
 
         return scores

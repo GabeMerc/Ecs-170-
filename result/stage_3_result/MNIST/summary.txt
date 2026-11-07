@@ -1,0 +1,11 @@
+Run                   Epochs  Accuracy  Precision   Recall      F1
+mnist_baseline            22    0.9910     0.9910   0.9910  0.9910
+mnist_kernel5             21    0.9924     0.9924   0.9924  0.9924
+mnist_1block              29    0.9890     0.9890   0.9890  0.9890
+mnist_avgpool             29    0.9914     0.9914   0.9914  0.9914
+mnist_stride2             20    0.9860     0.9861   0.9860  0.9860
+mnist_hidden512           19    0.9926     0.9926   0.9926  0.9926
+mnist_mse                 17    0.9901     0.9902   0.9901  0.9901
+mnist_3block              27    0.9922     0.9922   0.9922  0.9922
+mnist_leakyrelu           20    0.9911     0.9911   0.9911  0.9911
+mnist_bn_dropout          31    0.9929     0.9929   0.9929  0.9929

@@ -1,0 +1,42 @@
+Run: mnist_mse
+Loss: mse, Optimizer: adam
+Conv layers:
+Sequential(
+  (0): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (1): ReLU()
+  (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (3): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (4): ReLU()
+  (5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+)
+FC layers:
+Sequential(
+  (0): Linear(in_features=3136, out_features=128, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=128, out_features=10, bias=True)
+)
+
+Training per epoch
+Epoch 0    Accuracy 0.9271  Loss 0.0109
+Epoch 1    Accuracy 0.9819  Loss 0.0029
+Epoch 2    Accuracy 0.9871  Loss 0.0020
+Epoch 3    Accuracy 0.9895  Loss 0.0017
+Epoch 4    Accuracy 0.9921  Loss 0.0013
+Epoch 5    Accuracy 0.9934  Loss 0.0011
+Epoch 6    Accuracy 0.9937  Loss 0.0010
+Epoch 7    Accuracy 0.9949  Loss 0.0008
+Epoch 8    Accuracy 0.9950  Loss 0.0008
+Epoch 9    Accuracy 0.9960  Loss 0.0006
+Epoch 10   Accuracy 0.9965  Loss 0.0006
+Epoch 11   Accuracy 0.9972  Loss 0.0005
+Epoch 12   Accuracy 0.9969  Loss 0.0005
+Epoch 13   Accuracy 0.9980  Loss 0.0004
+Epoch 14   Accuracy 0.9967  Loss 0.0005
+Epoch 15   Accuracy 0.9979  Loss 0.0004
+Epoch 16   Accuracy 0.9978  Loss 0.0004
+
+Test results
+Accuracy:           0.9901
+Weighted Precision: 0.9902
+Weighted Recall:    0.9901
+Weighted F1:        0.9901

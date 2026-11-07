@@ -1,0 +1,59 @@
+Run: mnist_bn_dropout
+Loss: cross_entropy, Optimizer: adam
+Conv layers:
+Sequential(
+  (0): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (2): ReLU()
+  (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (4): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (5): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (6): ReLU()
+  (7): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+)
+FC layers:
+Sequential(
+  (0): Linear(in_features=3136, out_features=128, bias=True)
+  (1): ReLU()
+  (2): Dropout(p=0.5, inplace=False)
+  (3): Linear(in_features=128, out_features=10, bias=True)
+)
+
+Training per epoch
+Epoch 0    Accuracy 0.9301  Loss 0.2306
+Epoch 1    Accuracy 0.9722  Loss 0.0948
+Epoch 2    Accuracy 0.9764  Loss 0.0770
+Epoch 3    Accuracy 0.9803  Loss 0.0652
+Epoch 4    Accuracy 0.9824  Loss 0.0589
+Epoch 5    Accuracy 0.9844  Loss 0.0516
+Epoch 6    Accuracy 0.9863  Loss 0.0449
+Epoch 7    Accuracy 0.9871  Loss 0.0439
+Epoch 8    Accuracy 0.9879  Loss 0.0385
+Epoch 9    Accuracy 0.9890  Loss 0.0342
+Epoch 10   Accuracy 0.9896  Loss 0.0317
+Epoch 11   Accuracy 0.9905  Loss 0.0305
+Epoch 12   Accuracy 0.9901  Loss 0.0298
+Epoch 13   Accuracy 0.9914  Loss 0.0264
+Epoch 14   Accuracy 0.9911  Loss 0.0266
+Epoch 15   Accuracy 0.9920  Loss 0.0245
+Epoch 16   Accuracy 0.9926  Loss 0.0225
+Epoch 17   Accuracy 0.9927  Loss 0.0227
+Epoch 18   Accuracy 0.9937  Loss 0.0186
+Epoch 19   Accuracy 0.9934  Loss 0.0192
+Epoch 20   Accuracy 0.9943  Loss 0.0169
+Epoch 21   Accuracy 0.9937  Loss 0.0181
+Epoch 22   Accuracy 0.9948  Loss 0.0154
+Epoch 23   Accuracy 0.9941  Loss 0.0173
+Epoch 24   Accuracy 0.9951  Loss 0.0148
+Epoch 25   Accuracy 0.9947  Loss 0.0154
+Epoch 26   Accuracy 0.9954  Loss 0.0139
+Epoch 27   Accuracy 0.9957  Loss 0.0124
+Epoch 28   Accuracy 0.9958  Loss 0.0132
+Epoch 29   Accuracy 0.9954  Loss 0.0135
+Epoch 30   Accuracy 0.9956  Loss 0.0123
+
+Test results
+Accuracy:           0.9929
+Weighted Precision: 0.9929
+Weighted Recall:    0.9929
+Weighted F1:        0.9929
