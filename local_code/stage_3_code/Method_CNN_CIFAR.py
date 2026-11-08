@@ -1,36 +1,21 @@
-'''
-Concrete MethodModule class for a specific learning MethodModule
-'''
-
-# Copyright (c) 2017-Current Jiawei Zhang <jiawei@ifmlab.org>
-# License: TBD
-
-from local_code.base_class.method import method
-import torch
+"""CIFAR CNN architecture used by script_cnn_cifar.py."""
 from torch import nn
-import numpy as np
 
 
-class Method_CNN_CIFAR(method, nn.Module):
-    data = None
-
-    def __init__(self, mName, mDescription):
-        method.__init__(self, mName, mDescription)
-        nn.Module.__init__(self)
-        #TODO: build conv layers
-
+class CIFARCNN(nn.Module):
+    def __init__(self, depth=3, batchnorm=True, dropout=0.3):
+        super().__init__()
+        layers, incoming = [], 3
+        for outgoing in (32, 64, 128)[:depth]:
+            for _ in range(2):
+                layers.append(nn.Conv2d(incoming, outgoing, 3, padding=1))
+                if batchnorm:
+                    layers.append(nn.BatchNorm2d(outgoing))
+                layers.append(nn.ReLU())
+                incoming = outgoing
+            layers.append(nn.MaxPool2d(2))
+        self.features = nn.Sequential(*layers)
+        self.head = nn.Sequential(nn.Flatten(), nn.Linear(incoming * (32 // 2**depth)**2, 128),
+                                  nn.ReLU(), nn.Dropout(dropout), nn.Linear(128, 10))
     def forward(self, x):
-        #TODO
-        pass
-
-    def train(self, X, y):
-        #TODO
-        pass
-
-    def test(self, X):
-        #TODO
-        pass
-
-    def run(self):
-        #TODO
-        pass
+        return self.head(self.features(x))
