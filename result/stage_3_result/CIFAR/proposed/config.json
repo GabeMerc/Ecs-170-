@@ -1,0 +1,23 @@
+{
+  "data": "data/stage_3_data/CIFAR",
+  "out": "result/stage_3_result/CIFAR/proposed",
+  "variant": "proposed",
+  "epochs": 40,
+  "batch_size": 128,
+  "seed": 21,
+  "device": "auto",
+  "test": false,
+  "device_used": "mps",
+  "mean": [
+    0.4913218498944717,
+    0.4821575181270425,
+    0.44645405747889433
+  ],
+  "std": [
+    0.24709062994524855,
+    0.2435321871696173,
+    0.26161888207425477
+  ],
+  "parameters": 551466,
+  "torch_version": "2.15.0"
+}
