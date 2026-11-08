@@ -1,0 +1,56 @@
+Run: orl_depth_4conv
+Configuration: {'conv_channels': (32, 64, 128, 256)}
+Seed: 21
+Parameters: 2,693,096
+Device: cuda
+Training time: 7.2s
+
+Training per epoch
+Epoch 0    Accuracy 0.0250  Loss 3.8547
+Epoch 1    Accuracy 0.0306  Loss 4.2895
+Epoch 2    Accuracy 0.0472  Loss 4.2538
+Epoch 3    Accuracy 0.3250  Loss 2.3152
+Epoch 4    Accuracy 0.8944  Loss 0.9304
+Epoch 5    Accuracy 0.9611  Loss 0.2669
+Epoch 6    Accuracy 0.9972  Loss 0.1782
+Epoch 7    Accuracy 0.9972  Loss 0.1143
+Epoch 8    Accuracy 0.9944  Loss 0.0707
+Epoch 9    Accuracy 0.9944  Loss 0.0677
+Epoch 10   Accuracy 1.0000  Loss 0.0386
+Epoch 11   Accuracy 1.0000  Loss 0.0288
+Epoch 12   Accuracy 1.0000  Loss 0.0211
+Epoch 13   Accuracy 1.0000  Loss 0.0125
+Epoch 14   Accuracy 1.0000  Loss 0.0073
+Epoch 15   Accuracy 1.0000  Loss 0.0101
+Epoch 16   Accuracy 0.9972  Loss 0.0148
+Epoch 17   Accuracy 1.0000  Loss 0.0076
+Epoch 18   Accuracy 1.0000  Loss 0.0079
+Epoch 19   Accuracy 1.0000  Loss 0.0037
+Epoch 20   Accuracy 1.0000  Loss 0.0030
+Epoch 21   Accuracy 1.0000  Loss 0.0022
+Epoch 22   Accuracy 1.0000  Loss 0.0044
+Epoch 23   Accuracy 1.0000  Loss 0.0048
+Epoch 24   Accuracy 1.0000  Loss 0.0039
+Epoch 25   Accuracy 1.0000  Loss 0.0011
+Epoch 26   Accuracy 1.0000  Loss 0.0010
+Epoch 27   Accuracy 1.0000  Loss 0.0022
+Epoch 28   Accuracy 1.0000  Loss 0.0006
+Epoch 29   Accuracy 1.0000  Loss 0.0006
+Epoch 30   Accuracy 1.0000  Loss 0.0005
+Epoch 31   Accuracy 1.0000  Loss 0.0007
+Epoch 32   Accuracy 1.0000  Loss 0.0016
+Epoch 33   Accuracy 1.0000  Loss 0.0003
+Epoch 34   Accuracy 1.0000  Loss 0.0003
+Epoch 35   Accuracy 1.0000  Loss 0.0002
+Epoch 36   Accuracy 1.0000  Loss 0.0007
+Epoch 37   Accuracy 1.0000  Loss 0.0010
+Epoch 38   Accuracy 1.0000  Loss 0.0005
+Epoch 39   Accuracy 1.0000  Loss 0.0006
+Epoch 40   Accuracy 1.0000  Loss 0.0003
+Epoch 41   Accuracy 1.0000  Loss 0.0003
+
+Test results
+Accuracy:           0.9500
+Weighted Precision: 0.9250
+Weighted Recall:    0.9500
+Weighted F1:        0.9333

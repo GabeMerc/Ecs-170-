@@ -1,0 +1,45 @@
+Run: orl_hidden_512
+Configuration: {'hidden_sizes': (512,)}
+Seed: 21
+Parameters: 10,206,696
+Device: cuda
+Training time: 5.1s
+
+Training per epoch
+Epoch 0    Accuracy 0.0944  Loss 3.4285
+Epoch 1    Accuracy 0.0361  Loss 3.7065
+Epoch 2    Accuracy 0.2694  Loss 2.7274
+Epoch 3    Accuracy 0.7833  Loss 1.0417
+Epoch 4    Accuracy 0.9306  Loss 0.4117
+Epoch 5    Accuracy 0.9861  Loss 0.0726
+Epoch 6    Accuracy 1.0000  Loss 0.0292
+Epoch 7    Accuracy 1.0000  Loss 0.0205
+Epoch 8    Accuracy 1.0000  Loss 0.0203
+Epoch 9    Accuracy 1.0000  Loss 0.0098
+Epoch 10   Accuracy 1.0000  Loss 0.0037
+Epoch 11   Accuracy 1.0000  Loss 0.0032
+Epoch 12   Accuracy 1.0000  Loss 0.0037
+Epoch 13   Accuracy 1.0000  Loss 0.0016
+Epoch 14   Accuracy 1.0000  Loss 0.0013
+Epoch 15   Accuracy 1.0000  Loss 0.0014
+Epoch 16   Accuracy 1.0000  Loss 0.0022
+Epoch 17   Accuracy 1.0000  Loss 0.0004
+Epoch 18   Accuracy 1.0000  Loss 0.0010
+Epoch 19   Accuracy 1.0000  Loss 0.0011
+Epoch 20   Accuracy 1.0000  Loss 0.0004
+Epoch 21   Accuracy 1.0000  Loss 0.0005
+Epoch 22   Accuracy 1.0000  Loss 0.0001
+Epoch 23   Accuracy 1.0000  Loss 0.0004
+Epoch 24   Accuracy 1.0000  Loss 0.0001
+Epoch 25   Accuracy 1.0000  Loss 0.0002
+Epoch 26   Accuracy 1.0000  Loss 0.0002
+Epoch 27   Accuracy 1.0000  Loss 0.0002
+Epoch 28   Accuracy 1.0000  Loss 0.0003
+Epoch 29   Accuracy 1.0000  Loss 0.0002
+Epoch 30   Accuracy 1.0000  Loss 0.0006
+
+Test results
+Accuracy:           0.9750
+Weighted Precision: 0.9625
+Weighted Recall:    0.9750
+Weighted F1:        0.9667

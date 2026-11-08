@@ -1,0 +1,48 @@
+Run: orl_optimizer_sgd
+Configuration: {'optimizer_name': 'sgd'}
+Seed: 21
+Parameters: 5,149,928
+Device: cuda
+Training time: 5.2s
+
+Training per epoch
+Epoch 0    Accuracy 0.0417  Loss 3.6255
+Epoch 1    Accuracy 0.0972  Loss 3.4527
+Epoch 2    Accuracy 0.1889  Loss 2.6843
+Epoch 3    Accuracy 0.6806  Loss 1.1721
+Epoch 4    Accuracy 0.6278  Loss 1.2895
+Epoch 5    Accuracy 0.4333  Loss 2.1592
+Epoch 6    Accuracy 0.7611  Loss 1.1081
+Epoch 7    Accuracy 0.4361  Loss 1.8366
+Epoch 8    Accuracy 0.7750  Loss 0.9812
+Epoch 9    Accuracy 0.6139  Loss 1.3156
+Epoch 10   Accuracy 0.6222  Loss 1.3076
+Epoch 11   Accuracy 0.6056  Loss 1.5651
+Epoch 12   Accuracy 0.5722  Loss 1.7021
+Epoch 13   Accuracy 0.5139  Loss 1.7866
+Epoch 14   Accuracy 0.5278  Loss 1.7412
+Epoch 15   Accuracy 0.4167  Loss 2.0320
+Epoch 16   Accuracy 0.4944  Loss 1.9318
+Epoch 17   Accuracy 0.4750  Loss 1.8895
+Epoch 18   Accuracy 0.4333  Loss 2.1190
+Epoch 19   Accuracy 0.3583  Loss 2.5592
+Epoch 20   Accuracy 0.2417  Loss 2.5853
+Epoch 21   Accuracy 0.2694  Loss 2.3884
+Epoch 22   Accuracy 0.2917  Loss 2.3773
+Epoch 23   Accuracy 0.2694  Loss 2.5199
+Epoch 24   Accuracy 0.2861  Loss 2.5137
+Epoch 25   Accuracy 0.2361  Loss 2.6586
+Epoch 26   Accuracy 0.2417  Loss 2.9076
+Epoch 27   Accuracy 0.3056  Loss 2.5845
+Epoch 28   Accuracy 0.2222  Loss 2.8469
+Epoch 29   Accuracy 0.2528  Loss 2.6717
+Epoch 30   Accuracy 0.2306  Loss 2.8383
+Epoch 31   Accuracy 0.2528  Loss 2.7522
+Epoch 32   Accuracy 0.3000  Loss 2.5269
+Epoch 33   Accuracy 0.3194  Loss 2.4281
+
+Test results
+Accuracy:           0.3000
+Weighted Precision: 0.1899
+Weighted Recall:    0.3000
+Weighted F1:        0.2104
