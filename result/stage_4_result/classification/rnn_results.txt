@@ -1,0 +1,39 @@
+Run: rnn
+Configuration: {'cell': 'rnn'}
+Hyperparameters: embedding_dim=100, hidden_dim=128, dropout=0.3, lr=0.001, batch_size=64, max_epoch=15, patience=3, grad_clip=5.0
+Seed: 21
+Parameters: 2,029,698
+Device: cpu
+Training time: 447.8s
+
+Per epoch
+Epoch 1   Train loss 0.6717  Train acc 0.5835  Val loss 0.6234  Val acc 0.6580
+Epoch 2   Train loss 0.6098  Train acc 0.6693  Val loss 0.5671  Val acc 0.7152
+Epoch 3   Train loss 0.5635  Train acc 0.7167  Val loss 0.5549  Val acc 0.7348
+Epoch 4   Train loss 0.5057  Train acc 0.7639  Val loss 0.5346  Val acc 0.7444
+Epoch 5   Train loss 0.4634  Train acc 0.7924  Val loss 0.5215  Val acc 0.7772
+Epoch 6   Train loss 0.4295  Train acc 0.8147  Val loss 0.5178  Val acc 0.7752
+Epoch 7   Train loss 0.3966  Train acc 0.8309  Val loss 0.5165  Val acc 0.7504
+Epoch 8   Train loss 0.3552  Train acc 0.8529  Val loss 0.5536  Val acc 0.7380
+Epoch 9   Train loss 0.3211  Train acc 0.8723  Val loss 0.5824  Val acc 0.7160
+Epoch 10  Train loss 0.2858  Train acc 0.8875  Val loss 0.5523  Val acc 0.7748
+
+Best epoch (lowest validation loss): 7
+
+Test results (25,000 reviews)
+test_loss:          0.5267
+accuracy:           0.7552
+precision:          0.7657
+recall:             0.7354
+f1:                 0.7503
+precision_macro:    0.7556
+recall_macro:       0.7552
+f1_macro:           0.7551
+precision_weighted: 0.7556
+recall_weighted:    0.7552
+f1_weighted:        0.7551
+
+Confusion matrix (rows true, cols predicted; 0=neg, 1=pos)
+          pred neg  pred pos
+true neg      9687      2813
+true pos      3307      9193

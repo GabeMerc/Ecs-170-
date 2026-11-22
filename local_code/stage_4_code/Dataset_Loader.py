@@ -1,6 +1,7 @@
-"""Stage 4.1: inspect both corpora and prepare sentiment sequences."""
+"""Stage 4.1: inspect both corpora and prepare sentiment and joke sequences."""
 import csv
 import html
+import random
 import re
 from collections import Counter
 from pathlib import Path
@@ -16,17 +17,31 @@ def tokenize(text):
     return re.findall(r"[a-z0-9]+(?:'[a-z0-9]+)*", text)
 
 
+def tokenize_joke(text):
+    # Generation keeps punctuation as tokens so stories read as sentences.
+    # An ellipsis is one token, otherwise "." repeats dominate greedy decoding.
+    return re.findall(r"[a-z0-9]+(?:'[a-z0-9]+)*|\.{2,}|[^\sa-z0-9]",
+                      html.unescape(text).lower())
+
+
+def detokenize(tokens):
+    text = ' '.join(tokens)
+    return re.sub(r" ([.,!?;:%)\]])", r'\1', re.sub(r"([(\[$]) ", r'\1', text))
+
+
 class Vocabulary:
     PAD, UNK = 0, 1
 
-    def __init__(self, documents, max_vocab=20000, min_freq=2):
-        if max_vocab < 2 or min_freq < 1:
+    def __init__(self, documents, max_vocab=20000, min_freq=2,
+                 tokenizer=tokenize, specials=()):
+        if max_vocab < 2 + len(specials) or min_freq < 1:
             raise ValueError('max_vocab >= 2 and min_freq >= 1 required')
-        counts = Counter(token for doc in documents for token in tokenize(doc))
+        self.tokenizer = tokenizer
+        counts = Counter(token for doc in documents for token in tokenizer(doc))
         words = sorted(counts, key=lambda word: (-counts[word], word))
-        self.tokens = ['<pad>', '<unk>'] + [
+        self.tokens = ['<pad>', '<unk>', *specials] + [
             word for word in words if counts[word] >= min_freq
-        ][:max_vocab - 2]
+        ][:max_vocab - 2 - len(specials)]
         self.word_to_id = {word: i for i, word in enumerate(self.tokens)}
 
     def __len__(self):
@@ -36,7 +51,10 @@ class Vocabulary:
         if max_length < 1:
             raise ValueError('max_length must be positive')
         return [self.word_to_id.get(w, self.UNK)
-                for w in tokenize(text)[:max_length]] or [self.UNK]
+                for w in self.tokenizer(text)[:max_length]] or [self.UNK]
+
+    def decode(self, ids):
+        return [self.tokens[i] for i in ids]
 
 
 class ReviewDataset(torch.utils.data.Dataset):
@@ -57,6 +75,41 @@ def collate_reviews(batch):
     lengths = torch.tensor([len(seq) for seq in sequences], dtype=torch.long)
     return (pad_sequence(sequences, batch_first=True, padding_value=0),
             lengths, torch.stack(labels))
+
+
+class JokeDataset(torch.utils.data.Dataset):
+    """Each joke becomes tokens + <eos>; the model predicts token t+1 from 0..t."""
+    def __init__(self, jokes, vocabulary, max_length=100):
+        eos = vocabulary.word_to_id['<eos>']
+        self.sequences = [torch.tensor(vocabulary.encode(j, max_length) + [eos],
+                                       dtype=torch.long) for j in jokes]
+
+    def __len__(self):
+        return len(self.sequences)
+
+    def __getitem__(self, index):
+        return self.sequences[index]
+
+
+def collate_jokes(batch):
+    inputs = [seq[:-1] for seq in batch]
+    targets = [seq[1:] for seq in batch]
+    lengths = torch.tensor([len(seq) for seq in inputs], dtype=torch.long)
+    return (pad_sequence(inputs, batch_first=True, padding_value=0),
+            lengths, pad_sequence(targets, batch_first=True, padding_value=0))
+
+
+def split_indices(labels, val_fraction, seed):
+    # Stratified so the validation split keeps the class balance.
+    rng = random.Random(seed)
+    train, val = [], []
+    for label in sorted(set(labels)):
+        idx = [i for i, y in enumerate(labels) if y == label]
+        rng.shuffle(idx)
+        cut = round(len(idx) * val_fraction)
+        val += idx[:cut]
+        train += idx[cut:]
+    return sorted(train), sorted(val)
 
 
 class Dataset_Loader(dataset):
@@ -102,14 +155,40 @@ class Dataset_Loader(dataset):
         result['generation'] = {'count': len(jokes), 'example': jokes[0]}
         return result
 
-    def load(self):
+    def load(self, val_fraction=0.0, seed=21):
         train_texts, train_labels = self._reviews('train')
         test_texts, test_labels = self._reviews('test')
-        # Never learn vocabulary/frequencies from the held-out test reviews.
+        val_texts = val_labels = None
+        if val_fraction > 0:
+            train_idx, val_idx = split_indices(train_labels, val_fraction, seed)
+            val_texts = [train_texts[i] for i in val_idx]
+            val_labels = [train_labels[i] for i in val_idx]
+            train_texts = [train_texts[i] for i in train_idx]
+            train_labels = [train_labels[i] for i in train_idx]
+        # Never learn vocabulary/frequencies from validation or test reviews.
         vocabulary = Vocabulary(train_texts, self.max_vocab, self.min_freq)
         self.data = {
             'train': ReviewDataset(train_texts, train_labels, vocabulary, self.max_length),
             'test': ReviewDataset(test_texts, test_labels, vocabulary, self.max_length),
             'vocabulary': vocabulary,
         }
+        if val_texts is not None:
+            self.data['val'] = ReviewDataset(val_texts, val_labels, vocabulary, self.max_length)
         return self.data
+
+    def load_generation_corpus(self, val_fraction=0.0, seed=21, min_freq=1, max_length=100):
+        jokes = self.load_generation()
+        train_jokes, val_jokes = jokes, []
+        if val_fraction > 0:
+            train_idx, val_idx = split_indices([0] * len(jokes), val_fraction, seed)
+            train_jokes = [jokes[i] for i in train_idx]
+            val_jokes = [jokes[i] for i in val_idx]
+        vocabulary = Vocabulary(train_jokes, max_vocab=10 ** 6, min_freq=min_freq,
+                                tokenizer=tokenize_joke, specials=('<eos>',))
+        return {
+            'train': JokeDataset(train_jokes, vocabulary, max_length),
+            'val': JokeDataset(val_jokes, vocabulary, max_length) if val_jokes else None,
+            'train_jokes': train_jokes,
+            'val_jokes': val_jokes,
+            'vocabulary': vocabulary,
+        }
