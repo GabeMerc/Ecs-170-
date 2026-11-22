@@ -1,0 +1,153 @@
+Run: rnn_generator
+Hyperparameters: cell=rnn, embedding_dim=128, hidden_dim=256, num_layers=2, dropout=0.3, lr=0.002, batch_size=32, epochs=40, grad_clip=5.0
+Decoding: greedy, plus 3 samples at temperature 0.8, top-k 10
+Seed: 21
+Parameters: 1,962,900
+Vocabulary: 4500
+Training jokes: 1460
+Device: cuda
+Training time: 28.5s
+
+Per epoch
+Epoch 1   Train loss 5.8653  Train ppl 352.60  Val loss 6.0547  Val ppl 426.11
+Epoch 2   Train loss 5.3069  Train ppl 201.73  Val loss 5.7185  Val ppl 304.45
+Epoch 3   Train loss 4.8483  Train ppl 127.52  Val loss 5.6189  Val ppl 275.58
+Epoch 4   Train loss 4.4900  Train ppl 89.12  Val loss 5.5827  Val ppl 265.80
+Epoch 5   Train loss 4.1807  Train ppl 65.41  Val loss 5.5561  Val ppl 258.81
+Epoch 6   Train loss 3.9068  Train ppl 49.74  Val loss 5.5582  Val ppl 259.36
+Epoch 7   Train loss 3.6524  Train ppl 38.57  Val loss 5.5732  Val ppl 263.27
+Epoch 8   Train loss 3.4375  Train ppl 31.11  Val loss 5.5981  Val ppl 269.92
+Epoch 9   Train loss 3.2354  Train ppl 25.42  Val loss 5.6346  Val ppl 279.94
+Epoch 10  Train loss 3.0436  Train ppl 20.98  Val loss 5.6735  Val ppl 291.04
+Epoch 11  Train loss 2.8835  Train ppl 17.88  Val loss 5.7294  Val ppl 307.79
+Epoch 12  Train loss 2.7516  Train ppl 15.67  Val loss 5.7545  Val ppl 315.60
+Epoch 13  Train loss 2.6144  Train ppl 13.66  Val loss 5.8264  Val ppl 339.14
+Epoch 14  Train loss 2.4637  Train ppl 11.75  Val loss 5.8322  Val ppl 341.11
+Epoch 15  Train loss 2.3553  Train ppl 10.54  Val loss 5.8638  Val ppl 352.07
+Epoch 16  Train loss 2.2621  Train ppl 9.60  Val loss 5.9170  Val ppl 371.31
+Epoch 17  Train loss 2.1659  Train ppl 8.72  Val loss 5.9516  Val ppl 384.35
+Epoch 18  Train loss 2.0858  Train ppl 8.05  Val loss 5.9737  Val ppl 392.94
+Epoch 19  Train loss 2.0083  Train ppl 7.45  Val loss 6.0029  Val ppl 404.62
+Epoch 20  Train loss 1.9410  Train ppl 6.97  Val loss 6.0497  Val ppl 423.99
+Epoch 21  Train loss 1.8800  Train ppl 6.55  Val loss 6.0717  Val ppl 433.41
+Epoch 22  Train loss 1.8317  Train ppl 6.24  Val loss 6.1155  Val ppl 452.81
+Epoch 23  Train loss 1.7635  Train ppl 5.83  Val loss 6.1508  Val ppl 469.10
+Epoch 24  Train loss 1.7166  Train ppl 5.57  Val loss 6.1643  Val ppl 475.46
+Epoch 25  Train loss 1.6707  Train ppl 5.32  Val loss 6.1933  Val ppl 489.46
+Epoch 26  Train loss 1.6193  Train ppl 5.05  Val loss 6.2222  Val ppl 503.79
+Epoch 27  Train loss 1.5801  Train ppl 4.86  Val loss 6.2529  Val ppl 519.53
+Epoch 28  Train loss 1.5615  Train ppl 4.77  Val loss 6.3017  Val ppl 545.47
+Epoch 29  Train loss 1.5101  Train ppl 4.53  Val loss 6.3207  Val ppl 555.94
+Epoch 30  Train loss 1.4863  Train ppl 4.42  Val loss 6.3311  Val ppl 561.76
+Epoch 31  Train loss 1.4531  Train ppl 4.28  Val loss 6.3581  Val ppl 577.15
+Epoch 32  Train loss 1.4114  Train ppl 4.10  Val loss 6.3867  Val ppl 593.89
+Epoch 33  Train loss 1.3788  Train ppl 3.97  Val loss 6.4023  Val ppl 603.20
+Epoch 34  Train loss 1.3558  Train ppl 3.88  Val loss 6.4290  Val ppl 619.59
+Epoch 35  Train loss 1.3338  Train ppl 3.80  Val loss 6.4517  Val ppl 633.77
+Epoch 36  Train loss 1.3051  Train ppl 3.69  Val loss 6.4811  Val ppl 652.70
+Epoch 37  Train loss 1.2904  Train ppl 3.63  Val loss 6.4961  Val ppl 662.54
+Epoch 38  Train loss 1.2721  Train ppl 3.57  Val loss 6.5112  Val ppl 672.61
+Epoch 39  Train loss 1.2518  Train ppl 3.50  Val loss 6.5271  Val ppl 683.42
+Epoch 40  Train loss 1.2250  Train ppl 3.40  Val loss 6.5598  Val ppl 706.11
+
+Generated stories vs training data
+
+[what did the | greedy]
+  Story:   what did the 0 say to the 8? nice belt.
+  Nearest: what did the 0 say to the 8? nice belt.  (similarity 1.00)
+  Start begins 76 training jokes, appears in 80; exact copy: True; longest verbatim span 12/12 tokens; n-grams seen in training: 2=1.00 3=1.00 4=1.00
+
+[what did the | sample 1]
+  Story:   what did the 0 say to the 8? nice belt.
+  Nearest: what did the 0 say to the 8? nice belt.  (similarity 1.00)
+  Start begins 76 training jokes, appears in 80; exact copy: True; longest verbatim span 12/12 tokens; n-grams seen in training: 2=1.00 3=1.00 4=1.00
+
+[what did the | sample 2]
+  Story:   what did the german policeman say to the barber? it was chassing.
+  Nearest: what did the 0 say to the 8? nice belt.  (similarity 0.62)
+  Start begins 76 training jokes, appears in 80; exact copy: False; longest verbatim span 7/14 tokens; n-grams seen in training: 2=0.92 3=0.83 4=0.64
+
+[what did the | sample 3]
+  Story:   what did the buddhist say to the other plate? dinners it.
+  Nearest: what the plate say to the other plate? dinners on me  (similarity 0.72)
+  Start begins 76 training jokes, appears in 80; exact copy: False; longest verbatim span 7/13 tokens; n-grams seen in training: 2=0.92 3=0.82 4=0.80
+
+[why did the | greedy]
+  Story:   why did the chicken cross the road? to get to the other slide
+  Nearest: why did the chicken cross the playground? to get to the other slide  (similarity 0.93)
+  Start begins 85 training jokes, appears in 88; exact copy: False; longest verbatim span 13/14 tokens; n-grams seen in training: 2=1.00 3=1.00 4=1.00
+
+[why did the | sample 1]
+  Story:   why did the chicken cross the road? to be to be topical
+  Nearest: why did the chicken cross the road? to get to the other side.  (similarity 0.71)
+  Start begins 85 training jokes, appears in 88; exact copy: False; longest verbatim span 9/13 tokens; n-grams seen in training: 2=0.92 3=0.82 4=0.60
+
+[why did the | sample 2]
+  Story:   why did the chicken cross the playground? to get to the other slide
+  Nearest: why did the chicken cross the playground? to get to the other slide  (similarity 1.00)
+  Start begins 85 training jokes, appears in 88; exact copy: True; longest verbatim span 14/14 tokens; n-grams seen in training: 2=1.00 3=1.00 4=1.00
+
+[why did the | sample 3]
+  Story:   why did the buddhist refuse novocaine when it was covered out of the alphabet? the post office.
+  Nearest: what has more letters than the alphabet? the post office.  (similarity 0.45)
+  Start begins 85 training jokes, appears in 88; exact copy: False; longest verbatim span 7/19 tokens; n-grams seen in training: 2=0.94 3=0.82 4=0.56
+
+[did you hear | greedy]
+  Story:   did you hear about the kidnapping recently? he was impeached!
+  Nearest: did you hear about the lawyer for u2? he was pro - bono  (similarity 0.62)
+  Start begins 33 training jokes, appears in 35; exact copy: False; longest verbatim span 8/12 tokens; n-grams seen in training: 2=1.00 3=0.90 4=0.78
+
+[did you hear | sample 1]
+  Story:   did you hear about the kidnapping recently? it kept crashing.
+  Nearest: did you hear about the kidnapping recently? the goatherd woke him up.  (similarity 0.69)
+  Start begins 33 training jokes, appears in 35; exact copy: False; longest verbatim span 8/12 tokens; n-grams seen in training: 2=0.91 3=0.80 4=0.67
+
+[did you hear | sample 2]
+  Story:   did you hear about the two monocles are you of a tree? a pool table.
+  Nearest: did you hear about the two silk worms that got in a fight? it ended in a tie.  (similarity 0.54)
+  Start begins 33 training jokes, appears in 35; exact copy: False; longest verbatim span 8/17 tokens; n-grams seen in training: 2=0.94 3=0.73 4=0.64
+
+[did you hear | sample 3]
+  Story:   did you hear about the native american who was a windshield sausage.
+  Nearest: did you hear about the neutron who was arrested? he was held without charge.  (similarity 0.55)
+  Start begins 33 training jokes, appears in 35; exact copy: False; longest verbatim span 8/13 tokens; n-grams seen in training: 2=0.83 3=0.64 4=0.50
+
+[i went to | greedy]
+  Story:   i went to a shredded and drank, " i don't know what he laced it with a little joke.
+  Nearest: i bought some shoes from a drug dealer, i don't know what he laced them with but i have been tripping all day. - - my amazing girlfriend told me this one  (similarity 0.40)
+  Start begins 5 training jokes, appears in 6; exact copy: False; longest verbatim span 6/21 tokens; n-grams seen in training: 2=0.80 3=0.53 4=0.39
+
+[i went to | sample 1]
+  Story:   i went to a seafood disco last week and it goes to waste the perseid day, but i was framed to make a van succinct buildup.
+  Nearest: i went to a seafood disco last week...... and pulled a mussel.  (similarity 0.51)
+  Start begins 5 training jokes, appears in 6; exact copy: False; longest verbatim span 8/28 tokens; n-grams seen in training: 2=0.81 3=0.46 4=0.28
+
+[i went to | sample 2]
+  Story:   i went to a shredded and drank 37 cups of a tree? ' cause you smell carrots?
+  Nearest: what did one snowman say to the other snowman? ' do you smell carrots? '  (similarity 0.39)
+  Start begins 5 training jokes, appears in 6; exact copy: False; longest verbatim span 5/19 tokens; n-grams seen in training: 2=0.89 3=0.65 4=0.38
+
+[i went to | sample 3]
+  Story:   i went to a shredded... well are the right day. the photon says, " well, chew, chew! *
+  Nearest: what's a difference between a teacher and a train? the teacher tells you to spit you gum out. the train says, " chew, chew, chew! "  (similarity 0.39)
+  Start begins 5 training jokes, appears in 6; exact copy: False; longest verbatim span 6/24 tokens; n-grams seen in training: 2=0.83 3=0.45 4=0.33
+
+[my wife asked | greedy]
+  Story:   my wife asked she's doing so full of themselves.
+  Nearest: i can't stand russian dolls... they're always so full of themselves!  (similarity 0.35)
+  Start begins 0 training jokes, appears in 0; exact copy: False; longest verbatim span 4/10 tokens; n-grams seen in training: 2=0.67 3=0.38 4=0.14
+
+[my wife asked | sample 1]
+  Story:   my wife asked she's doing right joke... but i blew it friday.
+  Nearest: my friend told an out of place joke about police searches. but i don't think it was warranted.  (similarity 0.35)
+  Start begins 0 training jokes, appears in 0; exact copy: False; longest verbatim span 4/14 tokens; n-grams seen in training: 2=0.85 3=0.42 4=0.09
+
+[my wife asked | sample 2]
+  Story:   my wife asked to have a heart attack towards the local swimming pool. "
+  Nearest: today a man knocked on my door and asked for a small donation towards the local swimming pool. i gave him a glass of water.  (similarity 0.43)
+  Start begins 0 training jokes, appears in 0; exact copy: False; longest verbatim span 6/15 tokens; n-grams seen in training: 2=0.86 3=0.54 4=0.42
+
+[my wife asked | sample 3]
+  Story:   my wife asked to have a dirty joke? it was a soft.
+  Nearest: wanna hear a dirty joke? a white horse fell in the mud.  (similarity 0.43)
+  Start begins 0 training jokes, appears in 0; exact copy: False; longest verbatim span 4/14 tokens; n-grams seen in training: 2=0.85 3=0.50 4=0.27
