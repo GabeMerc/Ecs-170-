@@ -1,0 +1,36 @@
+Run: bilstm
+Configuration: {'cell': 'lstm', 'bidirectional': True}
+Hyperparameters: embedding_dim=100, hidden_dim=128, dropout=0.3, lr=0.001, batch_size=64, max_epoch=15, patience=3, grad_clip=5.0
+Seed: 21
+Parameters: 2,236,034
+Device: cuda
+Training time: 64.4s
+
+Per epoch
+Epoch 1   Train loss 0.5871  Train acc 0.6747  Val loss 0.4704  Val acc 0.7836
+Epoch 2   Train loss 0.4212  Train acc 0.8083  Val loss 0.5767  Val acc 0.7140
+Epoch 3   Train loss 0.3462  Train acc 0.8479  Val loss 0.4087  Val acc 0.8176
+Epoch 4   Train loss 0.2717  Train acc 0.8880  Val loss 0.3649  Val acc 0.8548
+Epoch 5   Train loss 0.2214  Train acc 0.9125  Val loss 0.3676  Val acc 0.8520
+Epoch 6   Train loss 0.1567  Train acc 0.9419  Val loss 0.4166  Val acc 0.8444
+Epoch 7   Train loss 0.1118  Train acc 0.9602  Val loss 0.4383  Val acc 0.8548
+
+Best epoch (lowest validation loss): 4
+
+Test results (25,000 reviews)
+test_loss:          0.3943
+accuracy:           0.8386
+precision:          0.8662
+recall:             0.8009
+f1:                 0.8323
+precision_macro:    0.8405
+recall_macro:       0.8386
+f1_macro:           0.8384
+precision_weighted: 0.8405
+recall_weighted:    0.8386
+f1_weighted:        0.8384
+
+Confusion matrix (rows true, cols predicted; 0=neg, 1=pos)
+          pred neg  pred pos
+true neg     10954      1546
+true pos      2489     10011
