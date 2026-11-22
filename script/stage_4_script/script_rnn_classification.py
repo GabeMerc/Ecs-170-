@@ -1,8 +1,4 @@
-"""Stage 4.3: train recurrent sentiment classifiers, plot learning curves, evaluate on test.
 
-Run from repository root:
-    python -m script.stage_4_script.script_rnn_classification --data-root PATH [--runs rnn lstm]
-"""
 import argparse
 import copy
 import json
@@ -76,7 +72,8 @@ def run_epoch(model, loader, device, loss_function, optimizer=None, clip=5.0):
     return total_loss / count, correct / count, torch.cat(trues).numpy(), torch.cat(preds).numpy()
 
 
-def train_and_evaluate(name, configuration, data, args):
+def train_and_evaluate(name, configuration, data, args, result_dir=RESULT_DIR, return_history=False):
+    result_dir.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     device = torch.device(args.device)
@@ -123,13 +120,13 @@ def train_and_evaluate(name, configuration, data, args):
                   train_time=train_time, num_params=num_params)
     print(f"{name}: test accuracy {scores['accuracy']:.4f}, F1 {scores['f1']:.4f} (best epoch {best_epoch})")
 
-    plot_learning_curves(history, RESULT_DIR / f'{name}_learning_curves.png',
+    plot_learning_curves(history, result_dir / f'{name}_learning_curves.png',
                          f'{name.upper()} sentiment', test_accuracy=scores['accuracy'])
-    save_run_log(RESULT_DIR / f'{name}_results.txt', name, configuration, args, history, scores)
+    save_run_log(result_dir / f'{name}_results.txt', name, configuration, args, history, scores)
     if args.save_model:
         torch.save({'state_dict': best_state, 'vocabulary': data['vocabulary'].tokens,
-                    'configuration': configuration}, RESULT_DIR / f'{name}_model.pt')
-    return scores
+                    'configuration': configuration}, result_dir / f'{name}_model.pt')
+    return (scores, history) if return_history else scores
 
 
 def save_run_log(path, name, configuration, args, history, scores):
@@ -151,7 +148,7 @@ def save_run_log(path, name, configuration, args, history, scores):
                 f'          pred neg  pred pos\ntrue neg  {tn:>8}  {fp:>8}\ntrue pos  {fn:>8}  {tp:>8}\n')
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(description='Stage 4.3 RNN sentiment classification')
     parser.add_argument('--data-root', required=True)
     parser.add_argument('--runs', nargs='+', default=['rnn', 'lstm'], choices=list(trial_runs))
@@ -166,7 +163,11 @@ def main():
     parser.add_argument('--seed', type=int, default=21)
     parser.add_argument('--device', default='cpu', choices=['cpu', 'cuda', 'mps'])
     parser.add_argument('--save-model', action='store_true')
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = build_parser().parse_args()
 
     RESULT_DIR.mkdir(parents=True, exist_ok=True)
     data = Dataset_Loader(data_root=args.data_root).load(val_fraction=args.val_fraction, seed=args.seed)

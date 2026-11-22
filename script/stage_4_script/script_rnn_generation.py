@@ -1,10 +1,6 @@
-"""Stage 4.4: train a word-level RNN language model on the jokes, generate stories from
-three starting words, and compare them against the training data.
 
-Run from repository root:
-    python -m script.stage_4_script.script_rnn_generation --data-root PATH [--start "what did the"]
-"""
 import argparse
+import copy
 import json
 import math
 import time
@@ -47,43 +43,26 @@ def run_epoch(model, loader, device, loss_function, optimizer=None, clip=5.0):
     return total_loss / total_tokens
 
 
-def main():
-    parser = argparse.ArgumentParser(description='Stage 4.4 RNN text generation')
-    parser.add_argument('--data-root', required=True)
-    parser.add_argument('--start', nargs='+', default=DEFAULT_STARTS,
-                        help='Starting phrases of exactly three words each')
-    parser.add_argument('--cell', default='lstm', choices=['rnn', 'lstm', 'gru'])
-    parser.add_argument('--max-epoch', type=int, default=40)
-    parser.add_argument('--batch-size', type=int, default=32)
-    parser.add_argument('--lr', type=float, default=2e-3)
-    parser.add_argument('--embedding-dim', type=int, default=128)
-    parser.add_argument('--hidden-dim', type=int, default=256)
-    parser.add_argument('--num-layers', type=int, default=2)
-    parser.add_argument('--dropout', type=float, default=0.3)
-    parser.add_argument('--val-fraction', type=float, default=0.1)
-    parser.add_argument('--samples', type=int, default=3, help='Sampled stories per start, besides greedy')
-    parser.add_argument('--temperature', type=float, default=0.8)
-    parser.add_argument('--top-k', type=int, default=10)
-    parser.add_argument('--seed', type=int, default=21)
-    parser.add_argument('--device', default='cpu', choices=['cpu', 'cuda', 'mps'])
-    args = parser.parse_args()
+def parse_starts(phrases):
 
-    starts = [tokenize_joke(s) for s in args.start]
-    for phrase, tokens in zip(args.start, starts):
+    starts = [tokenize_joke(s) for s in phrases]
+    for phrase, tokens in zip(phrases, starts):
         if len(tokens) != 3:
-            parser.error(f'start phrase must be three words: {phrase!r} -> {tokens}')
+            raise ValueError(f'start phrase must be three words: {phrase!r} -> {tokens}')
+    return starts
 
-    RESULT_DIR.mkdir(parents=True, exist_ok=True)
+
+def train_and_generate(name, args, corpus, result_dir=RESULT_DIR):
+
+    starts = parse_starts(args.start)
+    checkpoint = getattr(args, 'checkpoint', 'final')
+    result_dir.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     device = torch.device(args.device)
-    corpus = Dataset_Loader(data_root=args.data_root).load_generation_corpus(
-        val_fraction=args.val_fraction, seed=args.seed)
     vocab = corpus['vocabulary']
     eos = vocab.word_to_id['<eos>']
-    print(f"train jokes {len(corpus['train'])}, val jokes {len(corpus['val_jokes'])}, vocabulary {len(vocab)}")
 
-    name = args.cell + '_generator'
     model = Method_RNN_Generator(name, '', vocab_size=len(vocab), embedding_dim=args.embedding_dim,
                                  hidden_dim=args.hidden_dim, num_layers=args.num_layers,
                                  dropout=args.dropout, cell=args.cell).to(device)
@@ -94,10 +73,13 @@ def main():
                               collate_fn=collate_jokes)
     val_loader = (DataLoader(corpus['val'], batch_size=256, collate_fn=collate_jokes)
                   if corpus['val'] is not None else None)
+    if checkpoint == 'best' and val_loader is None:
+        raise ValueError("checkpoint='best' needs a validation split (val_fraction > 0)")
     loss_function = nn.CrossEntropyLoss(ignore_index=0)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
     history = {k: [] for k in ['epoch', 'train_loss', 'train_perplexity', 'val_loss', 'val_perplexity']}
+    best_loss, best_epoch, best_state = float('inf'), None, None
     start_time = time.time()
     for epoch in range(args.max_epoch):
         run_epoch(model, train_loader, device, loss_function, optimizer)
@@ -112,10 +94,20 @@ def main():
             history['val_loss'].append(val_loss)
             history['val_perplexity'].append(math.exp(val_loss))
             line += f' | val loss {val_loss:.4f} ppl {math.exp(val_loss):8.2f}'
+            if val_loss < best_loss:
+                best_loss, best_epoch = val_loss, epoch + 1
+                if checkpoint == 'best':
+                    best_state = copy.deepcopy(model.state_dict())
         print(line + f' | {time.time() - start_time:.0f}s')
     train_time = time.time() - start_time
-    plot_learning_curves(history, RESULT_DIR / f'{name}_learning_curves.png',
+    plot_learning_curves(history, result_dir / f'{name}_learning_curves.png',
                          f'{args.cell.upper()} joke language model', metric='perplexity')
+
+    generated_from_epoch = history['epoch'][-1]
+    if checkpoint == 'best':
+        model.load_state_dict(best_state)
+        generated_from_epoch = best_epoch
+        print(f'Generating from the best validation checkpoint (epoch {best_epoch})')
 
     index = TrainingCorpusIndex([tokenize_joke(j) for j in corpus['train_jokes']])
     rng = torch.Generator().manual_seed(args.seed)
@@ -135,11 +127,18 @@ def main():
                   f"   nearest training joke ({comparison['nearest_similarity']:.2f}): "
                   f"{detokenize(comparison['nearest_joke'])}")
 
-    save_report(name, args, num_params, train_time, history, stories, len(vocab), len(corpus['train']))
+    save_report(name, args, num_params, train_time, history, stories, len(vocab), len(corpus['train']),
+                result_dir, checkpoint, generated_from_epoch)
+    return {'num_params': num_params, 'train_time': train_time, 'history': history,
+            'stories': stories, 'best_epoch': best_epoch, 'checkpoint': checkpoint,
+            'generated_from_epoch': generated_from_epoch}
 
 
-def save_report(name, args, num_params, train_time, history, stories, vocab_size, train_count):
-    with open(RESULT_DIR / f'{name}_results.txt', 'w') as f:
+def save_report(name, args, num_params, train_time, history, stories, vocab_size, train_count,
+                result_dir=RESULT_DIR, checkpoint='final', generated_from_epoch=None):
+    best_note = (f'Stories generated from the best validation checkpoint (epoch {generated_from_epoch}).'
+                 if checkpoint == 'best' else None)
+    with open(result_dir / f'{name}_results.txt', 'w') as f:
         f.write(f'Run: {name}\nHyperparameters: cell={args.cell}, embedding_dim={args.embedding_dim}, '
                 f'hidden_dim={args.hidden_dim}, num_layers={args.num_layers}, dropout={args.dropout}, '
                 f'lr={args.lr}, batch_size={args.batch_size}, epochs={args.max_epoch}, grad_clip=5.0\n')
@@ -152,6 +151,8 @@ def save_report(name, args, num_params, train_time, history, stories, vocab_size
             if history['val_loss']:
                 row += f"  Val loss {history['val_loss'][i]:.4f}  Val ppl {history['val_perplexity'][i]:.2f}"
             f.write(row + '\n')
+        if best_note:
+            f.write('\n' + best_note + '\n')
         f.write('\nGenerated stories vs training data\n')
         for s in stories:
             f.write(f"\n[{s['start']} | {s['decoding']}]\n  Story:   {s['story']}\n"
@@ -166,7 +167,7 @@ def save_report(name, args, num_params, train_time, history, stories, vocab_size
              f'{args.cell.upper()} language model, {num_params:,} parameters, {args.max_epoch} epochs. '
              f"Final train perplexity {history['train_perplexity'][-1]:.2f}"
              + (f", validation perplexity {history['val_perplexity'][-1]:.2f}" if history['val_loss'] else '')
-             + '.', '',
+             + '.' + (' ' + best_note if best_note else ''), '',
              '| Start | Decoding | Story | Exact copy | Nearest sim. | Longest copied span | 3-grams in train |',
              '|---|---|---|---|---|---|---|']
     for s in stories:
@@ -174,8 +175,50 @@ def save_report(name, args, num_params, train_time, history, stories, vocab_size
         lines.append(f"| {s['start']} | {s['decoding']} | {story} | {'yes' if s['exact_copy'] else 'no'} | "
                      f"{s['nearest_similarity']:.2f} | {s['longest_copied_span']}/{s['length']} | "
                      f"{s['3gram_in_training']:.2f} |")
-    (RESULT_DIR / f'{name}_summary.md').write_text('\n'.join(lines) + '\n')
-    (RESULT_DIR / f'{name}_stories.json').write_text(json.dumps(stories, indent=2))
+    (result_dir / f'{name}_summary.md').write_text('\n'.join(lines) + '\n')
+    (result_dir / f'{name}_stories.json').write_text(json.dumps(stories, indent=2))
+
+
+def build_parser():
+    parser = argparse.ArgumentParser(description='Stage 4.4 RNN text generation')
+    parser.add_argument('--data-root', required=True)
+    parser.add_argument('--start', nargs='+', default=DEFAULT_STARTS,
+                        help='Starting phrases of exactly three words each')
+    parser.add_argument('--cell', default='lstm', choices=['rnn', 'lstm', 'gru'])
+    parser.add_argument('--max-epoch', type=int, default=40)
+    parser.add_argument('--batch-size', type=int, default=32)
+    parser.add_argument('--lr', type=float, default=2e-3)
+    parser.add_argument('--embedding-dim', type=int, default=128)
+    parser.add_argument('--hidden-dim', type=int, default=256)
+    parser.add_argument('--num-layers', type=int, default=2)
+    parser.add_argument('--dropout', type=float, default=0.3)
+    parser.add_argument('--val-fraction', type=float, default=0.1)
+    parser.add_argument('--samples', type=int, default=3, help='Sampled stories per start, besides greedy')
+    parser.add_argument('--temperature', type=float, default=0.8)
+    parser.add_argument('--top-k', type=int, default=10)
+    parser.add_argument('--seed', type=int, default=21)
+    parser.add_argument('--device', default='cpu', choices=['cpu', 'cuda', 'mps'])
+    parser.add_argument('--checkpoint', default='final', choices=['final', 'best'],
+                        help='Generate from the last epoch, or the lowest validation loss epoch')
+    return parser
+
+
+def load_corpus(args):
+    corpus = Dataset_Loader(data_root=args.data_root).load_generation_corpus(
+        val_fraction=args.val_fraction, seed=args.seed)
+    print(f"train jokes {len(corpus['train'])}, val jokes {len(corpus['val_jokes'])}, "
+          f"vocabulary {len(corpus['vocabulary'])}")
+    return corpus
+
+
+def main():
+    parser = build_parser()
+    args = parser.parse_args()
+    try:
+        parse_starts(args.start)
+    except ValueError as error:
+        parser.error(str(error))
+    train_and_generate(args.cell + '_generator', args, load_corpus(args))
 
 
 if __name__ == '__main__':
